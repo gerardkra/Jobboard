@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JobBoard — Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* small custom */
+    .glass { background: rgba(255,255,255,0.7); backdrop-filter: blur(6px); }
+  </style>
+
+  <style>
+  select {
+    transition: all 0.2s ease-in-out;
+  }
+  select:hover {
+    border-color: #2563eb; /* bleu Tailwind */
+  }
+  select:focus {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+  }
+</style>
+
+</head>
+
+<body class="bg-gray-50 text-gray-800 antialiased">
+
+  <!-- ============================
+       HEADER
+       ============================ -->
+  <header class="sticky top-0 z-40 bg-white/70 glass border-b">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+
+        <!-- Brand -->
+        <a href="/" class="flex items-center gap-3">
+          <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-bold">JB</div>
+          <div>
+            <div class="font-semibold text-lg">JobBoard</div>
+            <div class="text-xs text-gray-500">Find the right job</div>
+          </div>
+        </a>
+        <!-- <a href="/my_applications/1" class="text-gray-600 hover:text-gray-900">My Applications</a> -->
+
+
+        <!-- Navigation -->
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <!-- <a href="index.html" class="text-blue-600 font-medium">Jobs</a> -->
+          <!-- <a href="company.html" class="text-gray-600 hover:text-gray-900">Companies</a>
+          <a href="contact.html" class="text-gray-600 hover:text-gray-900">Contact</a> -->
+        </nav>
+
+        <!-- CTA -->
+        <!-- <div class="flex items-center gap-3">
+          <a href="/apply/:id" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md text-sm shadow">Post a Job</a>
+        </div> -->
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================
+       MAIN
+       ============================ -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- === Hero / Search section === -->
+<section class="bg-white rounded-xl shadow-sm p-6 flex flex-col items-center text-center">
+
+  <!-- Search + intro -->
+  <div class="w-full max-w-2xl">
+    <h1 class="text-2xl font-bold">Search jobs, companies, or locations</h1>
+    <p class="text-gray-600 mt-2">Browse thousands of job offers — frontend, backend, devops, data, and more.</p>
+
+    <!-- Search form (GET /home) -->
+    <form id="search-form" method="GET" action="/home" class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <input
+        type="text"
+        name="title"
+        aria-label="Job title"
+        placeholder="Job title (e.g. Node.js developer)"
+        class="px-4 py-3 rounded-md border border-gray-200"
+      />
+      <input
+        type="text"
+        name="location"
+        aria-label="Location"
+        placeholder="Location (city, remote)"
+        class="px-4 py-3 rounded-md border border-gray-200"
+      />
+      <button
+        type="submit"
+        class="bg-blue-600 text-white px-4 py-3 rounded-md font-medium"
+      >
+        Search
+      </button>
+    </form>
+    </section>
+
+    <!-- === Results layout (filters left / jobs right) === -->
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+    <form id="filters-form" method="GET" action="/home" class="bg-white rounded-xl p-4 shadow-sm text-sm text-gray-600 space-y-3">
+      <!-- Salary -->
+      <div>
+        <div class="text-xs text-gray-500 mb-2">Salary</div>
+        <select name="salary" class="w-full border rounded px-3 py-2 text-sm">
+          <option value="">Any</option>
+          <option value="<24k€">&lt; 24k€</option>
+          <option value="24k€ - 42k€">24k€ - 42k€</option>
+          <option value="42k€ - 60k€">42k€ - 60k€</option>
+          <option value=">60k€">&gt; 60k€</option>
+        </select>
+      </div>
+
+      <!-- Contract -->
+      <div>
+        <div class="text-xs text-gray-500 mb-2">Contract</div>
+        <select name="contract" class="w-full border rounded px-3 py-2 text-sm">
+          <option value="">Any</option>
+          <option value="CDI">Permanent (CDI)</option>
+          <option value="CDD">Fixed (CDD)</option>
+          <option value="Contract">Contract</option>
+          <option value="Internship">Internship</option>
+        </select>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <div class="text-xs text-gray-500 mb-2">Company</div>
+        <input name="company" class="w-full border rounded px-3 py-2 text-sm" placeholder="Company name" />
+      </div>
+
+      <button type="submit" class="w-full mt-3 bg-blue-600 text-white py-2 rounded">Filter</button>
+    </form>
+
+      <!-- Right column: jobs list -->
+      <div class="lg:col-span-3 space-y-6">
+
+      <!-- Sort + count -->
+      <div class="flex items-center justify-between">
+        <div id="jobs-count" class="text-sm text-gray-600">
+          Showing <span class="font-medium text-gray-800">6</span> jobs
+        </div>
+
+        <form id="sort-form" class="flex items-center gap-2" onsubmit="return false;">
+          <label for="sort" class="text-sm text-gray-500">Sort by:</label>
+          <select id="sort" name="sort" class="border rounded px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="salary_asc">Salary ↑</option>
+            <option value="salary_desc">Salary ↓</option>
+          </select>
+        </form>
+      </div>
+
+        <!-- Job cards placeholder (will be replaced by server) -->
+        <div id="jobs-list" class="gap-4">ads</div>
+
+        <!-- Pagination (simple) -->
+        <div class="flex items-center justify-center mt-3" id="pagination-wrapper">
+          <nav class="inline-flex -space-x-px rounded-md shadow-sm">
+            <a href="#" class="px-3 py-2 rounded-l-md border bg-white text-sm">Prev</a>
+            <a href="#" class="px-3 py-2 border bg-white text-sm">1</a>
+            <a href="#" class="px-3 py-2 border bg-white text-sm">2</a>
+            <a href="#" class="px-3 py-2 border bg-white text-sm">3</a>
+            <a href="#" class="px-3 py-2 rounded-r-md border bg-white text-sm">Next</a>
+          </nav>
+        </div>
+
+      </div> <!-- /jobs right column -->
+
+    </div> <!-- /results layout -->
+
+  </main>
+
+  <!-- ============================
+       FOOTER
+       ============================ -->
+  <footer class="border-t bg-white mt-12">
+    <div class="max-w-6xl mx-auto px-4 py-6 flex items-center justify-between text-sm text-gray-600">
+      <div>© 2025 JobBoard</div>
+      <div>Terms · Privacy · Contact</div>
+    </div>
+  </footer>
+
+  <!-- ============================
+       AJAX / Dynamic filters script
+       ============================ -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchForm = document.getElementById('search-form');
+    const filtersForm = document.getElementById('filters-form');
+    const sortSelect = document.getElementById('sort');
+    const jobsContainer = document.getElementById('jobs-list');
+    const countDiv = document.getElementById('jobs-count');
+    const paginationWrapper = document.getElementById('pagination-wrapper');
+
+    // Build query params from both forms + sort
+    function buildParams() {
+      const params = new URLSearchParams();
+
+      // Add fields from search form
+      if (searchForm) {
+        const sf = new FormData(searchForm);
+        for (const [k, v] of sf.entries()) if (v !== null && String(v).trim() !== '') params.set(k, v);
+      }
+
+      // Add fields from filters form
+      if (filtersForm) {
+        const ff = new FormData(filtersForm);
+        for (const [k, v] of ff.entries()) if (v !== null && String(v).trim() !== '') params.set(k, v);
+      }
+
+      // Add sort
+      if (sortSelect && sortSelect.value) params.set('sort', sortSelect.value);
+
+      return params.toString();
+    }
+
+    async function updateJobs(paramsStr) {
+      try {
+        const url = paramsStr ? `/home?${paramsStr}&ajax=1` : `/home?ajax=1`;
+        const res = await fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+        if (!res.ok) {
+          console.error('fetch failed', res.status);
+          return;
+        }
+        const html = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // replace jobs list
+        const newJobs = doc.getElementById('jobs-list') || doc.querySelector('#jobs-list');
+        if (newJobs && jobsContainer) {
+          jobsContainer.innerHTML = newJobs.innerHTML;
+        } else {
+          // fallback: try to find main result area
+          const fallback = doc.querySelector('#jobs-list, .gap-4');
+          if (fallback && jobsContainer) jobsContainer.innerHTML = fallback.innerHTML;
+        }
+
+        // replace count
+        const newCount = doc.getElementById('jobs-count') || doc.querySelector('#jobs-count');
+        if (newCount && countDiv) countDiv.innerHTML = newCount.innerHTML;
+
+        // replace pagination (nav.inline-flex)
+        const newPagination = doc.querySelector('nav.inline-flex');
+        const oldPagination = document.querySelector('nav.inline-flex');
+        if (newPagination) {
+          if (oldPagination) {
+            oldPagination.replaceWith(newPagination.cloneNode(true));
+          } else if (paginationWrapper) {
+            paginationWrapper.innerHTML = '';
+            paginationWrapper.appendChild(newPagination.cloneNode(true));
+          }
+        }
+
+      } catch (err) {
+        console.error('Erreur de mise à jour dynamique :', err);
+      }
+    }
+
+    // Intercept both GET forms (search + filters)
+    [searchForm, filtersForm].forEach((form) => {
+      if (!form) return;
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const params = buildParams();
+        updateJobs(params);
+        history.replaceState({}, '', `/home?${params}`);
+      });
+    });
+
+    // Sort change
+    if (sortSelect) {
+      sortSelect.addEventListener('change', () => {
+        const params = buildParams();
+        updateJobs(params);
+        history.replaceState({}, '', `/home?${params}`);
+      });
+    }
+
+    // Pagination delegation
+    document.body.addEventListener('click', (e) => {
+      const a = e.target.closest('nav.inline-flex a');
+      if (a && a.getAttribute('href')) {
+        const href = a.getAttribute('href');
+        // only handle links with querystring (our server uses ?page=... etc)
+        if (href.includes('?')) {
+          e.preventDefault();
+          // Resolve relative href: if it's like "?page=2&...", prefix pathname
+          let full = href;
+          try {
+            // If href is absolute or relative path with origin missing, build a URL
+            const resolved = new URL(href, window.location.origin + window.location.pathname);
+            const params = resolved.searchParams.toString();
+            updateJobs(params);
+            history.replaceState({}, '', resolved.pathname + '?' + params);
+          } catch (err) {
+            // fallback: use raw href
+            const params = href.split('?')[1] || '';
+            updateJobs(params);
+            history.replaceState({}, '', `/home?${params}`);
+          }
+        }
+      }
+    });
+
+    // On initial load, if there are query params (URL), sync UI values
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      // set sort value if present
+      const s = urlParams.get('sort');
+      if (s && sortSelect) sortSelect.value = s;
+      // you could also populate inputs from url if desired
+    } catch (err) {
+      // noop
+    }
+  });
+  </script>
+
+</body>
+</html>
