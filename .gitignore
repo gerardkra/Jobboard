@@ -1,0 +1,128 @@
+# =============================================================================
+# COMMON .GITIGNORE TEMPLATE
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# ESSENTIAL (Include in every project)
+# -----------------------------------------------------------------------------
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+logs/
+
+# Environment variables and secrets
+.env
+.env.*
+*.key
+*.pem
+secrets/
+
+# Cache and temporary files
+.cache/
+tmp/
+temp/
+
+# -----------------------------------------------------------------------------
+# DEPENDENCIES (Choose based on your project)
+# -----------------------------------------------------------------------------
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json  # Optional: remove if you want to commit lockfiles
+
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+env/
+
+# PHP
+vendor/
+
+# Ruby
+.bundle/
+vendor/bundle/
+
+# Go
+vendor/
+
+# Java
+target/
+.gradle/
+
+# -----------------------------------------------------------------------------
+# BUILD OUTPUTS (Choose based on your stack)
+# -----------------------------------------------------------------------------
+
+# Web/JavaScript
+dist/
+build/
+out/
+.next/
+
+# Python
+*.egg-info/
+
+# Java
+*.class
+*.jar
+*.war
+
+# C/C++
+*.o
+*.exe
+*.out
+
+# Go
+*.test
+
+# -----------------------------------------------------------------------------
+# TESTING AND COVERAGE
+# -----------------------------------------------------------------------------
+coverage/
+.coverage
+.pytest_cache/
+.nyc_output/
+htmlcov/
+
+# -----------------------------------------------------------------------------
+# CLOUD AND DEPLOYMENT (Add if relevant)
+# -----------------------------------------------------------------------------
+
+# Docker
+# Dockerfile*  # Uncomment if you want to ignore Dockerfiles
+# docker-compose*
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# AWS
+.aws/
+
+# Serverless
+.serverless/
+
+# -----------------------------------------------------------------------------
+# COMMON RUNTIME FILES
+# -----------------------------------------------------------------------------
+*.pid
+*.seed
+*.lock  # Remove if you want to commit lockfiles
