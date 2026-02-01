@@ -1,2 +1,2 @@
 # Jobboard
-Auteurs: Ismael, Gérard, Achraf
+Equipe projet: Ismael, Gérard, Achraf
